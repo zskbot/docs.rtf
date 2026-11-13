@@ -1,30 +1,25 @@
-name: Deploy OCODEJS docs to GitHub Pages
+# Legacy Pages workflow retained for manual diagnostics only.
+# The canonical GitHub Pages deployment is .github/workflows/static.yml.
+name: Deploy OCODEJS docs to GitHub Pages (manual only)
+
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
+
 permissions:
   contents: read
-  pages: write
-  id-token: write
+
 concurrency:
-  group: pages
+  group: pages-legacy-${{ github.ref }}
   cancel-in-progress: true
+
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-      - name: Upload static site
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: .
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Validate static site files
+        run: |
+          test -f index.html
+          test -f studio.html
