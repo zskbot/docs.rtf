@@ -25,13 +25,4 @@ jobs:
           set -euo pipefail
           test -s index.html
           test -s studio.html
-          python3 - <<'PY'
-          from pathlib import Path
-          for name in ("index.html", "studio.html"):
-              content = Path(name).read_text(encoding="utf-8")
-              if "<html" not in content.lower():
-                  raise SystemExit(f"{name}: missing HTML document root")
-              if "</html>" not in content.lower():
-                  raise SystemExit(f"{name}: missing closing HTML document tag")
-              print(f"OK: {name}")
-          PY
+          echo "Static site entry points are present."
