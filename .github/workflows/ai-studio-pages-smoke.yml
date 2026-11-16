@@ -1,0 +1,34 @@
+name: AI Studio Pages Smoke Tests
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "index.html"
+      - "studio.html"
+      - "tests/**"
+      - ".github/workflows/ai-studio-pages-smoke.yml"
+  push:
+    branches: ["fix/ai-studio-pages-basepath"]
+    paths:
+      - "index.html"
+      - "studio.html"
+      - "tests/**"
+      - ".github/workflows/ai-studio-pages-smoke.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  pages-path-smoke:
+    name: Validate GitHub Pages project paths
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Run path smoke tests
+        run: node tests/ai-studio-pages-smoke.mjs
