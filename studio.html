@@ -47,4 +47,4 @@ $('refresh').onclick=()=>{$('previewCaption').textContent='Preview được làm
 $('expand').onclick=()=>{$('preview').requestFullscreen?.()};
 $('github').onclick=()=>alert('GitHub OAuth + repository installation chưa được cấu hình. Không có dữ liệu nào được gửi.');
 $('terminal').onclick=()=>{let cmd='npx create-next-app@latest my-ocodejs-app --typescript --tailwind --app';navigator.clipboard?.writeText(cmd);$('integration').textContent='Lệnh khởi tạo Next.js đã được chuẩn bị: '+cmd};
-</script></body></html>
+/* GitHub Pages project-site base path */\nconst PAGES_BASE='/docs.rtf';document.querySelectorAll('a[href^="/"]').forEach(a=>{const href=a.getAttribute('href');if(href===PAGES_BASE||href.startsWith(PAGES_BASE+'/'))return;a.setAttribute('href',PAGES_BASE+(href==='/'?'/':href))});\n</script></body></html>
