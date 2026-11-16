@@ -6,13 +6,13 @@ const index = readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const studio = readFileSync(new URL("../studio.html", import.meta.url), "utf8");
 
 for (const [file, html] of [["index.html", index], ["studio.html", studio]]) {
-  const scripts = [...html.matchAll(/<script(?:\\s[^>]*)?>([\\s\\S]*?)<\\/script>/gi)];
+  const scripts = [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)];
   assert.ok(scripts.length > 0, `${file} should contain an inline script`);
   for (const [i, match] of scripts.entries()) {
     assert.doesNotThrow(() => new Script(match[1], { filename: `${file}#script-${i + 1}` }));
   }
 }
-assert.doesNotMatch(studio, /\\\\nconst PAGES_BASE/, "Studio script must use a real line break, not a literal \\n sequence");
+assert.ok(!studio.includes("\\nconst PAGES_BASE"), "Studio script must use a real line break");
 
 assert.match(index, /const PAGES_BASE=['"]\/docs\.rtf['"]/);
 assert.match(index, /current\.startsWith\(PAGES_BASE\+'\/'\)/);
