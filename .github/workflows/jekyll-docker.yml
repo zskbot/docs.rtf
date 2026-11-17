@@ -16,13 +16,26 @@ concurrency:
 jobs:
   validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - name: Validate static site entry points
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validate AI Studio source
+        run: node tests/ai-studio-pages-smoke.mjs
+      - name: Stage the public Pages artifact
+        run: node scripts/prepare-site.mjs
+      - name: Verify artifact contains only public entry points
         run: |
           set -euo pipefail
-          test -s index.html
-          test -s studio.html
-          echo "Static site entry points are present."
+          test -s _site/index.html
+          test -s _site/studio.html
+          test -s _site/404.html
+          test -f _site/.nojekyll
+          test ! -e _site/.github
+          test ! -e _site/tests
+          test ! -e _site/AI-STUDIO-IMPLEMENTATION.md
+          test "$(find _site -type f | wc -l)" -eq 4
